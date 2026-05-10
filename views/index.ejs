@@ -1,31 +1,83 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>All Invoices</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="/style.css">
+
 </head>
+
 <body>
-    <h1>All Invoices</h1>
-    <% invoices.forEach((invoice)=>{ %>
 
-        <div>
-            <h3>
-                Customer Name: <%= invoice.customerName %> <br>
-            </h3>
+<div class="container mt-5">
 
-            <p>
-                Total : <%= invoice.total %> 
-            </p>
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-            <p>
-                Status : <%= invoice.status %>
-            </p>
-        </div>
+        <h1>
+            All Invoices
+        </h1>
 
-   <% }) %>
+        <a href="/invoices/new" class="btn btn-primary">
+            Create Invoice
+        </a>
+
+    </div>
+
+    <div class="row">
+
+        <% invoices.forEach(invoice => { %>
+
+            <div class="col-md-4 mb-4">
+
+                <a 
+                    href="/invoices/<%= invoice._id %>"
+                    class="text-decoration-none text-dark"
+                >
+
+                    <div class="card shadow h-100">
+
+                        <div class="card-body">
+
+                            <h4 class="card-title">
+                                <%= invoice.customerName %>
+                            </h4>
+
+                            <p class="card-text">
+                                Total: ₹ <%= invoice.total %>
+                            </p>
+
+                            <p class="card-text">
+
+                                Status:
+
+                                <strong>
+                                    <%= invoice.status %>
+                                </strong>
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        <% }) %>
+
+    </div>
+
+</div>
+
 </body>
+
 </html>

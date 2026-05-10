@@ -1,12 +1,13 @@
 const express=require("express");
 const mongoose=require("mongoose");
-const Invoice=require("./models/invoice");
 
+const methodOverride = require("method-override");
 const app=express();
 
 app.set("view engine","ejs");
 app.use(express.urlencoded({extended:true}));
 app.use(express.static("public"));
+app.use(methodOverride("_method"));
 
 
 mongoose.connect("mongodb://127.0.0.1:27017/invoiceDB")
@@ -22,9 +23,7 @@ app.get("/",(req,res)=>{
 res.send("Hello Worlds");
 });
 
-app.get("/invoices/new",(req,res)=>{
-    res.render("new");
-})
+
 
 //show all invoices
 app.use("/invoices", require("./routes/invoiceRoutes"));

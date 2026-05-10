@@ -11,4 +11,22 @@ router.post("/",invoiceController.createInvoice);
 //show all invoices
 router.get("/",invoiceController.getAllInvoices);
 
+//download PDF
+router.get("/:id/pdf", invoiceController.downloadPDF);  
+
+//show single invoice
+router.get("/:id", invoiceController.showInvoice);
+
+//edit invoice
+router.get("/:id/edit", invoiceController.editForm);
+
+//update invoice
+router.put("/:id", invoiceController.updateInvoice);
+
+//delete
+router.delete("/:id",invoiceController.deleteInvoice);
+
+
+
+
 module.exports=router;
