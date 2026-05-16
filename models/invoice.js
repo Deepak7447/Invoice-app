@@ -33,7 +33,12 @@ const invoiceSchema=new mongoose.Schema({
 
     createdAt:{
         type:Date,
-        default:Date.now}
+        default:Date.now},
+
+        dueDate:{
+            type:Date,
+            required:true
+        }
 });
 
 

@@ -28,8 +28,10 @@ router.put("/:id", isLoggedIn, invoiceController.updateInvoice);
 router.delete("/:id",isLoggedIn,invoiceController.deleteInvoice);
 
 //dashboard
-router.get("/dashboard",isLoggedIn,invoiceController.dashoard);
+router.get("/dashboard",isLoggedIn,invoiceController.dashboard);
 
 
+//update status
+router.put("/:id/status",isLoggedIn,invoiceController.updateStatus);
 
 module.exports=router;

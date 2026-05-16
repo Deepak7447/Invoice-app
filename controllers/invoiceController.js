@@ -1,6 +1,7 @@
 const Invoice = require("../models/invoice");
 const PDFDocument= require("pdfkit");
 
+
 // Show Form
 exports.showForm = (req, res) => {
     res.render("new");
@@ -9,7 +10,7 @@ exports.showForm = (req, res) => {
 // Update Invoice
 exports.updateInvoice = async (req, res) => {
 
-    const { customerName, itemName, quantity, price } = req.body;
+    const { customerName, itemName, quantity, price, dueDate } = req.body;
 
     const subtotal = quantity * price;
 
@@ -20,6 +21,7 @@ exports.updateInvoice = async (req, res) => {
     await Invoice.findByIdAndUpdate(req.params.id, {
 
         customerName,
+        dueDate,
 
         items: [
             {
@@ -42,7 +44,7 @@ exports.updateInvoice = async (req, res) => {
 // Create Invoice
 exports.createInvoice = async (req, res) => {
 
-    const { customerName, itemName, quantity, price } = req.body;
+    const { customerName, itemName, quantity, price, dueDate } = req.body;
 
     const subtotal = quantity * price;
 
@@ -53,6 +55,7 @@ exports.createInvoice = async (req, res) => {
     const newInvoice = new Invoice({
 
         customerName,
+        dueDate,
 
         items: [
             {
@@ -64,10 +67,12 @@ exports.createInvoice = async (req, res) => {
 
         subtotal,
         gst,
-        total
+        total,
+         user:req.user._id
+       
     });
 
-    user:req.user._id
+   
 
     await newInvoice.save();
 
@@ -75,13 +80,24 @@ exports.createInvoice = async (req, res) => {
 };
 
 // Get All Invoices
-exports.getAllInvoices = async (req, res) => {
+exports.getAllInvoices = async(req,res)=>{
 
-   const invoices = await Invoice.find({
-    user:req.user._id}
-   ).sort({ createdAt: -1 });
+    await Invoice.updateMany(
+        {
+            dueDate:{ $lt:new Date() },
+            status:"Pending"
+        },
+        {
+            status:"Overdue"
+        }
+    );
 
-    res.render("index", { invoices });
+    const invoices = await Invoice.find({
+        user:req.user._id
+    });
+
+    res.render("index",{invoices});
+
 };
 
 
@@ -159,5 +175,33 @@ exports.downloadPDF = async (req, res) => {
 
     // Finish PDF
     doc.end();
+
+};
+
+
+exports.dashboard = async(req,res)=>{
+
+    res.send("Dashboard working");
+
+};
+
+
+exports.updateStatus = async(req,res)=>{
+const {status}=req.body;
+await Invoice.findByIdAndUpdate(
+ req.params.id,
+
+        {
+            status,
+
+            paymentDate:
+            status==="Paid"
+            ? new Date()
+            : null
+        }
+
+    );
+
+res.redirect("/invoices");
 
 };
