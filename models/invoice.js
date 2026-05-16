@@ -23,9 +23,20 @@ const invoiceSchema=new mongoose.Schema({
         default:"Unpaid"
     },
 
+    user:{
+
+    type:mongoose.Schema.Types.ObjectId,
+
+    ref:"User"
+
+},
+
     createdAt:{
         type:Date,
         default:Date.now}
 });
+
+
+
 
 module.exports=mongoose.models.Invoice || mongoose.model("Invoice",invoiceSchema);

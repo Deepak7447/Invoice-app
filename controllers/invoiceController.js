@@ -67,6 +67,8 @@ exports.createInvoice = async (req, res) => {
         total
     });
 
+    user:req.user._id
+
     await newInvoice.save();
 
     res.redirect("/invoices");
@@ -75,7 +77,9 @@ exports.createInvoice = async (req, res) => {
 // Get All Invoices
 exports.getAllInvoices = async (req, res) => {
 
-    const invoices = await Invoice.find();
+   const invoices = await Invoice.find({
+    user:req.user._id}
+   ).sort({ createdAt: -1 });
 
     res.render("index", { invoices });
 };

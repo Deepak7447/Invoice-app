@@ -1,31 +1,34 @@
 const express = require("express");
 const router=express.Router();
 const invoiceController=require("../controllers/invoiceController");
+const {isLoggedIn}=require("../middleware/auth");
 
 //show form
-router.get("/new",invoiceController.showForm);
+router.get("/new",isLoggedIn,invoiceController.showForm);
 
 //save invoice
-router.post("/",invoiceController.createInvoice);
+router.post("/",isLoggedIn,invoiceController.createInvoice);
 
 //show all invoices
-router.get("/",invoiceController.getAllInvoices);
+router.get("/",isLoggedIn,invoiceController.getAllInvoices);
 
 //download PDF
-router.get("/:id/pdf", invoiceController.downloadPDF);  
+router.get("/:id/pdf", isLoggedIn, invoiceController.downloadPDF);  
 
 //show single invoice
-router.get("/:id", invoiceController.showInvoice);
+router.get("/:id", isLoggedIn, invoiceController.showInvoice);
 
 //edit invoice
-router.get("/:id/edit", invoiceController.editForm);
+router.get("/:id/edit", isLoggedIn, invoiceController.editForm);
 
 //update invoice
-router.put("/:id", invoiceController.updateInvoice);
+router.put("/:id", isLoggedIn, invoiceController.updateInvoice);
 
 //delete
-router.delete("/:id",invoiceController.deleteInvoice);
+router.delete("/:id",isLoggedIn,invoiceController.deleteInvoice);
 
+//dashboard
+router.get("/dashboard",isLoggedIn,invoiceController.dashoard);
 
 
 
